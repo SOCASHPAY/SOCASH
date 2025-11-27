@@ -32,6 +32,27 @@ async fn setup_test_environment() -> Result<(ProgramTest, Keypair, Pubkey), Tran
         },
     );
 
+use anchor_lang::prelude::*;
+
+declare_id!("SoCode111111111111111111111111111111111111");
+
+#[program]
+pub mod socode {
+    use super::*;
+
+    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+        Ok(())
+    }
+
+    pub fn stake(ctx: Context<Stake>, amount: u64) -> Result<()> {
+        ctx.accounts.vault.amount += amount;
+        Ok(())
+    }
+}
+
+
+
+
     let (banks_client, payer, recent_blockhash) = program_test.start().await;
     Ok((program_test, payer, program_id))
 }
