@@ -175,6 +175,19 @@ async fn test_unauthorized_oracle_update_fails() {
     assert!(result.is_err());
 }
 
+
+// Verify AI agent API call
+    cy.wait('@aiAgentRequest').its('request.body').should('include', {
+      strategy: 'conservative',
+      userId: 'user123'
+    });
+    cy.get('[data-testid="ai-agent-response"]').should('contain.text', 'AI agent initialized for staking strategy.');
+
+    // Step 5: Verify full flow completion with UI feedback
+    cy.get('[data-testid="flow-complete-message"]').should('contain.text', 'Your staking and AI setup is complete!');
+  });
+
+
 #[tokio::test]
 async fn test_oracle_data_consistency() {
     let (mut program_test, payer, program_id) = setup_test_environment().await.unwrap();
